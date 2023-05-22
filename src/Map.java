@@ -58,10 +58,6 @@ public class Map {
         }
     }
 
-    public boolean isAnIsomer(int n){
-        return isAmountEqual(n);
-    }
-
     public boolean isValidCarbon(int i, int j){
         int count = 4;
         if (i != 0 && getIntFromMap(i-1, j) != -1){
@@ -79,7 +75,7 @@ public class Map {
         return (count == getIntFromMap(i, j));
     }
 
-    public boolean isAmountEqual(int n){
+    public boolean isAnIsomer(int n){
         int carbonCount = 0;
         int hydrogenCount = 0;
         for(int i = 0; i < getRow(); i++){
@@ -99,5 +95,42 @@ public class Map {
         return (carbonCount == n && hydrogenCount == (2*n+2));
     }
 
+    public void copyFrom(Map map){
+        for (int i = 0; i < getRow(); i++){
+            for(int j = 0; j < getCol(); j++){
+                m[i][j] = map.getIntFromMap(i, j);
+            }
+        }
+    }
 
+    public boolean isSameMap(Map map){
+        for (int i = 0; i < getRow(); i++){
+            for(int j = 0; j < getCol(); j++){
+                if (m[i][j] != map.getIntFromMap(i, j)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean isTileConnectedFromStart(int r, int c, int startR, int startC){
+        if (r == startR && c == startC+1){
+            return true;
+        }
+        if (c != 0 && m[r][c-1] != -1){
+            isTileConnectedFromStart(r, c-1, startR, startC);
+        }
+        if (r != 0 && m[r-1][c] != -1){
+            isTileConnectedFromStart(r-1, c, startR, startC);
+        }
+        if (c != getCol()-1 && m[r][c+1] != -1){
+            isTileConnectedFromStart(r, c+1, startR, startC);
+        }
+        if (r != getRow()-1 && m[r+1][c] != -1){
+            isTileConnectedFromStart(r+1, c, startR, startC);
+        }
+        return false;
+
+    }
 }
