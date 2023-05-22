@@ -21,51 +21,50 @@ public class Isomer {
     }
 
     public static void recursiveLoop(IsomerContainer ic, Map m, int r, int c, int maxRow, int maxCol){
-        // System.out.println(r+" "+c);
-        if (r == 0 && c == 0){
-            // Special Case for Methane
-            if (maxCol == 0 && maxRow == 0){
-                m.setIntToMap(4, maxRow, maxCol);
-            }
-            // Handle case for Small n
-            if (r == maxRow/2){
-                m.setIntToMap(3, r, c);
-            }
-            // Check if it is an Isomer
-            if (m.isAnIsomer(maxCol+1)){
-                // Prevent double output
-                if (!ic.isMapAlreadyInContainer(m)){
-                    ic.addMap(m);
-                    m.displayMap();
-                    isomerCountIncrement();
+
+        // Special Case for Methane
+        if (maxCol == 0 && maxRow == 0){
+            m.setIntToMap(4, maxRow, maxCol);
+            ic.addMap(m);
+            isomerCountIncrement();
+            iterationCountIncrement();
+        }
+        else {
+            // Automatically set for the head
+            m.setIntToMap(3, maxRow/2, 0);
+            // System.out.println(r+ " "+c);
+            // m.displayMap();
+            if (r == 0 && c == 1){
+                for (int k = -1; k < 4; k++){
+                    m.setIntToMap(k, r, c);
+
+                    // Check if it is an Isomer
+                    if (m.isAnIsomer(maxCol+1)){
+                        // Prevent double output
+                        if (!ic.isMapAlreadyInContainer(m)){
+                            ic.addMap(m);
+                            isomerCountIncrement();
+                        }
+                    }
+                    iterationCountIncrement();
                 }
             }
-            iterationCount++;
-        }
-        // Rekurens
-        else {
-            System.out.println(r+" "+ c);
-            m.displayMap();
-
-            if (c > 0){
-                if (m.isTileConnectedFromStart(r, c, maxRow/2, 0)){
+            // Rekurens
+            else {
+                if (c > 1){
                     for (int itr = -1; itr < 4; itr++){
                         m.setIntToMap(itr, r, c);
                         recursiveLoop(ic, m, r, c-1,maxRow,  maxCol);
                     }
                 }
-            }
-            else {
-                if (r == maxRow/2){
-                    m.setIntToMap(3, r, c);
-                } else {
-                    m.setIntToMap(-1, r, c);
+                else if (c == 1){
+                    for (int itr = -1; itr < 4; itr++){
+                        m.setIntToMap(itr, r, c);
+                        recursiveLoop(ic, m, r-1, maxCol, maxRow, maxCol);
+                    }
                 }
-                if (m.isTileConnectedFromStart(r, c, maxRow/2, 0)){
-                    recursiveLoop(ic, m, r-1, maxCol, maxRow, maxCol);
-                }
+                
             }
-            
         }
     }
 
@@ -104,7 +103,7 @@ public class Isomer {
         long stopTime = System.nanoTime();
 
         // Display Result
-        // ic.displayAllMap();
+        ic.displayAllMap();
 
         System.out.println("===============================");
         System.out.println("===============================");

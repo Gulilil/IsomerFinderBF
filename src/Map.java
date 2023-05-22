@@ -114,23 +114,4 @@ public class Map {
         return true;
     }
 
-    public boolean isTileConnectedFromStart(int r, int c, int startR, int startC){
-        if (r == startR && c == startC+1){
-            return true;
-        }
-        if (c != 0 && m[r][c-1] != -1){
-            isTileConnectedFromStart(r, c-1, startR, startC);
-        }
-        if (r != 0 && m[r-1][c] != -1){
-            isTileConnectedFromStart(r-1, c, startR, startC);
-        }
-        if (c != getCol()-1 && m[r][c+1] != -1){
-            isTileConnectedFromStart(r, c+1, startR, startC);
-        }
-        if (r != getRow()-1 && m[r+1][c] != -1){
-            isTileConnectedFromStart(r+1, c, startR, startC);
-        }
-        return false;
-
-    }
 }
